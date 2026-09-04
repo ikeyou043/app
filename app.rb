@@ -1,15 +1,24 @@
 # frozen_string_literal: true
 
 require 'sinatra'
+require 'json'
 enable :method_override
 
-MEMOS = {
-  '1' => { title: '明日の予定', info: '明日は出張', tag: '仕事', created_at: '2026/09/03' },
-  '2' => { title: '週末の予定', info: '週末はランチ', tag: 'プライベート', created_at: '2026/09/03' },
-  '3' => { title: '上田綺世移籍', info: '上田綺世リールへ移籍', tag: 'ニュース', created_at: '2026/09/03' }
-}
+DB_PATH = File.join(__dir__, 'db', 'memos.json')
+
+def load_memos
+  json_string = File.read(DB_PATH)
+  memos = JSON.parse(json_string, symbolize_names: true)
+  memos.transform_keys(&:to_s)
+end
+
+def save_memos(memos)
+  json_string = JSON.pretty_generate(memos)
+  File.write(DB_PATH, json_string)
+end
+
 get '/' do
-  @memos = MEMOS
+  @memos = load_memos
   erb :index
 end
 
@@ -18,46 +27,53 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  memo_id = params[:id]
+  memos = load_memos
 
-  @memo = MEMOS[memo_id]
+  @memo = memos[params[:id]]
   erb :show
 end
 
 post '/memos' do
-  new_id = (MEMOS.keys.map(&:to_i).max + 1).to_s
+  memos = load_memos
+  new_id = (memos.keys.map(&:to_i).max + 1).to_s
 
   created_time = Time.now.strftime('%Y-%m-%d %H:%M')
 
-  MEMOS[new_id] = {
+  memos[new_id] = {
     title: params[:title],
     info: params[:info],
     tag: params[:tag],
     created_at: created_time
   }
 
+  save_memos(memos)
   redirect '/'
 end
 
 get '/memos/:id/edit' do
-  @memo = MEMOS[params[:id]]
+  memos = load_memos
+  @memo = memos[params[:id]]
   erb :edit
 end
 
-post '/memos/:id' do
+patch '/memos/:id' do
+  memos = load_memos
   memo_id = params[:id]
 
-  MEMOS[memo_id][:title] = params[:title]
-  MEMOS[memo_id][:info]  = params[:info]
-  MEMOS[memo_id][:tag]   = params[:tag]
+  memos[memo_id][:title] = params[:title]
+  memos[memo_id][:info]  = params[:info]
+  memos[memo_id][:tag]   = params[:tag]
 
+  save_memos(memos)
   redirect "/memos/#{memo_id}"
 end
 
 delete '/memos/:id' do
+  memos = load_memos
   memo_id = params[:id]
 
-  MEMOS.delete(memo_id)
+  memos.delete(memo_id)
+  save_memos(memos)
 
   redirect '/'
 end
