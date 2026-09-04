@@ -32,3 +32,9 @@ http://localhost:4567
 ```bash
 bundle exec rubocop
 ```
+
+## ERB Lintの実行
+
+```bash
+bundle exec erb_lint --lint-all
+```

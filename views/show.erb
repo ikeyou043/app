@@ -6,7 +6,7 @@
   <li><strong>作成日時：</strong> <%= @memo[:created_at] %></li>
 </ul>
 <div>
-  <a href="/" >戻る</a>
+  <a href="/">戻る</a>
   <a href="/memos/<%= params[:id] %>/edit">編集</a>
   <form action="/memos/<%= params[:id] %>" method="POST" onsubmit="return confirm('本当に削除しますか？');">
     <input type="hidden" name="_method" value="DELETE">
