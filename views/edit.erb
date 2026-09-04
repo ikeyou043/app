@@ -18,6 +18,6 @@
       <option value="その他" <%= 'selected' if @memo[:tag] == 'その他' %>>その他</option>
     </select>
   </p>
-  <a href="/memos/<%= params[:id] %>">戻る</a>
+  <a href="/memos/<%= params[:id] %>" class="btn">戻る</a>
   <button type="submit">更新</button>
 </form>
