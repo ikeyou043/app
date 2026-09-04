@@ -3,6 +3,7 @@
 require 'sinatra'
 require 'json'
 enable :method_override
+set :erb, escape_html: true
 
 DB_PATH = File.join(__dir__, 'db', 'memos.json')
 
