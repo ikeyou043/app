@@ -1,0 +1,22 @@
+<h1>新規メモ</h1>
+<form action="/memos" method="POST">
+  <p>
+    <label>タイトル：</label><br>
+    <input type="text" name="title" required>
+  </p>
+  <p>
+    <label>内容：</label><br>
+    <textarea name="info"></textarea>
+  </p>
+  <p>
+    <label>タグ：</label><br>
+    <select name="tag">
+      <option value="仕事">仕事</option>
+      <option value="プライベート">プライベート</option>
+      <option value="ニュース">ニュース</option>
+      <option value="その他">その他</option>
+    </select>
+  </p>
+  <a href="/">戻る</a>
+  <button type="submit">保存</button>
+</form>

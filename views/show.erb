@@ -7,4 +7,9 @@
 </ul>
 <div>
   <a href="/" >戻る</a>
+  <a href="/memos/<%= params[:id] %>/edit">編集</a>
+  <form action="/memos/<%= params[:id] %>" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit">削除</button>
+  </form>
 </div>
