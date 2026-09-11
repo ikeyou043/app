@@ -2,6 +2,8 @@
 
 require 'sinatra'
 require 'json'
+require 'securerandom'
+
 enable :method_override
 set :erb, escape_html: true
 
@@ -18,7 +20,7 @@ def save_memos(memos)
   File.write(DB_PATH, json_string)
 end
 
-get '/' do
+get '/memos' do
   @memos = load_memos
   erb :index
 end
@@ -31,13 +33,13 @@ get '/memos/:id' do
   memos = load_memos
 
   @memo = memos[params[:id]]
+  halt 404 if @memo.nil?
   erb :show
 end
 
 post '/memos' do
   memos = load_memos
-  new_id = (memos.keys.map(&:to_i).max + 1).to_s
-
+  new_id = SecureRandom.uuid
   created_time = Time.now.strftime('%Y-%m-%d %H:%M')
 
   memos[new_id] = {
@@ -48,19 +50,21 @@ post '/memos' do
   }
 
   save_memos(memos)
-  redirect '/'
+  redirect '/memos'
 end
 
 get '/memos/:id/edit' do
   memos = load_memos
   @memo = memos[params[:id]]
+  halt 404 if @memo.nil?
   erb :edit
 end
 
 patch '/memos/:id' do
   memos = load_memos
   memo_id = params[:id]
-
+  @memo = memos[params[:id]]
+  halt 404 if @memo.nil?
   memos[memo_id][:title] = params[:title]
   memos[memo_id][:info]  = params[:info]
   memos[memo_id][:tag]   = params[:tag]
@@ -76,5 +80,5 @@ delete '/memos/:id' do
   memos.delete(memo_id)
   save_memos(memos)
 
-  redirect '/'
+  redirect '/memos'
 end
