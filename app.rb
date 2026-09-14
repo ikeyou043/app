@@ -20,6 +20,10 @@ def save_memos(memos)
   File.write(DB_PATH, json_string)
 end
 
+get '/' do
+  redirect '/memos'
+end
+
 get '/memos' do
   @memos = load_memos
   erb :index
