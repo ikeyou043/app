@@ -3,8 +3,8 @@
 source 'https://rubygems.org'
 
 gem 'erubi'
-gem 'sinatra'
 gem 'pg'
+gem 'sinatra'
 group :development do
   gem 'erb_lint', require: false
   gem 'rubocop', require: false
