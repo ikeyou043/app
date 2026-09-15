@@ -3,11 +3,12 @@
 require 'sinatra'
 require 'json'
 require 'securerandom'
+require 'pg'
 
 enable :method_override
 set :erb, escape_html: true
 
-DB_PATH = File.join(__dir__, 'db', 'memos.json')
+DB = PG.connect(dbname: "memo_app")
 
 def load_memos
   json_string = File.read(DB_PATH)

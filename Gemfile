@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gem 'erubi'
 gem 'sinatra'
+gem 'pg'
 group :development do
   gem 'erb_lint', require: false
   gem 'rubocop', require: false
