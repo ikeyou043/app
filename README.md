@@ -6,6 +6,7 @@ Sinatra製のシンプルなメモ管理アプリです。メモの一覧表示�
 
 - Ruby 4.0.6
 - Bundler
+- PostgreSQL(自分のマシンにインストール済みであること)
 
 ## セットアップ
 
@@ -13,6 +14,14 @@ Sinatra製のシンプルなメモ管理アプリです。メモの一覧表示�
 git clone https://github.com/ikeyou043/app.git
 cd app
 bundle install
+```
+
+### データベースの作成
+
+`db/create_tables.sql` に、データベース(`memo_app`)とテーブル(`memos`)を作成するDDLが入っています。以下のコマンドで適用してください。
+
+```bash
+psql postgres -f db/create_tables.sql
 ```
 
 ## 起動方法
