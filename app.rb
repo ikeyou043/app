@@ -42,7 +42,7 @@ get '/memos/:id/edit' do
 end
 
 patch '/memos/:id' do
-  memo_id = params['id']
+  memo_id = params[:id]
   memos = Memo.find(memo_id)
   @memo = memos.first
   halt 404 if @memo.nil?
@@ -52,7 +52,6 @@ patch '/memos/:id' do
 end
 
 delete '/memos/:id' do
-  params[:id]
   Memo.delete(params[:id])
   redirect '/memos'
 end
