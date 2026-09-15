@@ -1,0 +1,80 @@
+/* public/style.css */
+
+/* ページ全体の基本デザイン */
+body {
+  font-size: large;
+  font-family: sans-serif;
+  padding: 20px;
+  background-color: #fcfcfc;
+}
+
+/* 操作ボタンを1行に並べる設定 */
+.action-menu {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.action-menu form {
+  margin: 0;
+  padding: 0;
+}
+
+/* 共通の「ボタン風」デザイン */
+button, .btn {
+  display: inline-block;
+  padding: 6px 16px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-decoration: none;
+  color: black;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+button:hover, .btn:hover {
+  background-color: #e2e6ea;
+}
+
+/* 点なしリスト用のデザイン */
+.no-dot-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+/* リスト同士に少し隙間をあけて見やすくする */
+li {
+  margin-bottom: 10px;
+}
+
+/* フォームのテキストエリア(複数行入力)を大きくする */
+textarea {
+  width: 100%;
+  max-width: 500px;
+  height: 150px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input[type="text"] {
+  width: 100%;
+  max-width: 500px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+select {
+  width: 100%;
+  max-width: 200px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

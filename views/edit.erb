@@ -1,0 +1,23 @@
+<h1>メモの編集</h1>
+<form action="/memos/<%= params[:id] %>" method="POST">
+  <input type="hidden" name="_method" value="PATCH">
+  <p>
+    <label>タイトル：</label><br>
+    <input type="text" name="title" value="<%= @memo[:title] %>" required>
+  </p>
+  <p>
+    <label>内容：</label><br>
+    <textarea name="info"><%= @memo[:info] %></textarea>
+  </p>
+  <p>
+    <label>タグ：</label><br>
+    <select name="tag">
+      <option value="仕事" <%= 'selected' if @memo[:tag] == '仕事' %>>仕事</option>
+      <option value="プライベート" <%= 'selected' if @memo[:tag] == 'プライベート' %>>プライベート</option>
+      <option value="ニュース" <%= 'selected' if @memo[:tag] == 'ニュース' %>>ニュース</option>
+      <option value="その他" <%= 'selected' if @memo[:tag] == 'その他' %>>その他</option>
+    </select>
+  </p>
+  <a href="/memos/<%= params[:id] %>" class="btn">戻る</a>
+  <button type="submit">更新</button>
+</form>
