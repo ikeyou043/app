@@ -2,7 +2,7 @@
 
 class Memo
   def self.all
-    DB.exec('SELECT * FROM memos;')
+    DB.exec('SELECT * FROM memos ORDER BY id;')
   end
 
   def self.create(title, info, tag)
@@ -10,7 +10,8 @@ class Memo
   end
 
   def self.find(id)
-    DB.exec_params('SELECT * FROM memos WHERE id = $1', [id])
+    result = DB.exec_params('SELECT * FROM memos WHERE id = $1', [id])
+    result.first
   end
 
   def self.update(title, info, tag, id)

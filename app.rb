@@ -23,8 +23,9 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
+  halt 404 unless params[:id] =~ /\A\d+\z/
   memos = Memo.find(params[:id])
-  @memo = memos.first
+  @memo = memos
   halt 404 if @memo.nil?
   erb :show
 end
@@ -35,16 +36,18 @@ post '/memos' do
 end
 
 get '/memos/:id/edit' do
+  halt 404 unless params[:id] =~ /\A\d+\z/
   memos = Memo.find(params[:id])
-  @memo = memos.first
+  @memo = memos
   halt 404 if @memo.nil?
   erb :edit
 end
 
 patch '/memos/:id' do
+  halt 404 unless params[:id] =~ /\A\d+\z/
   memo_id = params[:id]
   memos = Memo.find(memo_id)
-  @memo = memos.first
+  @memo = memos
   halt 404 if @memo.nil?
 
   Memo.update(params[:title], params[:info], params[:tag], memo_id)
@@ -52,6 +55,7 @@ patch '/memos/:id' do
 end
 
 delete '/memos/:id' do
+  halt 404 unless params[:id] =~ /\A\d+\z/
   Memo.delete(params[:id])
   redirect '/memos'
 end
