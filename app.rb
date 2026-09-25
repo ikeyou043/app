@@ -1,31 +1,20 @@
 # frozen_string_literal: true
 
 require 'sinatra'
-require 'json'
-require 'securerandom'
+require 'pg'
+require_relative 'models/memo'
 
 enable :method_override
 set :erb, escape_html: true
 
-DB_PATH = File.join(__dir__, 'db', 'memos.json')
-
-def load_memos
-  json_string = File.read(DB_PATH)
-  memos = JSON.parse(json_string, symbolize_names: true)
-  memos.transform_keys(&:to_s)
-end
-
-def save_memos(memos)
-  json_string = JSON.pretty_generate(memos)
-  File.write(DB_PATH, json_string)
-end
+DB = PG.connect(dbname: 'memo_app')
 
 get '/' do
   redirect '/memos'
 end
 
 get '/memos' do
-  @memos = load_memos
+  @memos = Memo.all
   erb :index
 end
 
@@ -34,55 +23,36 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  memos = load_memos
-
-  @memo = memos[params[:id]]
+  halt 404 unless params[:id] =~ /\A\d+\z/
+  @memo = Memo.find(params[:id])
   halt 404 if @memo.nil?
   erb :show
 end
 
 post '/memos' do
-  memos = load_memos
-  new_id = SecureRandom.uuid
-  created_time = Time.now.strftime('%Y-%m-%d %H:%M')
-
-  memos[new_id] = {
-    title: params[:title],
-    info: params[:info],
-    tag: params[:tag],
-    created_at: created_time
-  }
-
-  save_memos(memos)
+  Memo.create(params[:title], params[:info], params[:tag])
   redirect '/memos'
 end
 
 get '/memos/:id/edit' do
-  memos = load_memos
-  @memo = memos[params[:id]]
+  halt 404 unless params[:id] =~ /\A\d+\z/
+  @memo = Memo.find(params[:id])
   halt 404 if @memo.nil?
   erb :edit
 end
 
 patch '/memos/:id' do
-  memos = load_memos
+  halt 404 unless params[:id] =~ /\A\d+\z/
   memo_id = params[:id]
-  @memo = memos[params[:id]]
+  @memo = Memo.find(memo_id)
   halt 404 if @memo.nil?
-  memos[memo_id][:title] = params[:title]
-  memos[memo_id][:info]  = params[:info]
-  memos[memo_id][:tag]   = params[:tag]
 
-  save_memos(memos)
+  Memo.update(params[:title], params[:info], params[:tag], memo_id)
   redirect "/memos/#{memo_id}"
 end
 
 delete '/memos/:id' do
-  memos = load_memos
-  memo_id = params[:id]
-
-  memos.delete(memo_id)
-  save_memos(memos)
-
+  halt 404 unless params[:id] =~ /\A\d+\z/
+  Memo.delete(params[:id])
   redirect '/memos'
 end
